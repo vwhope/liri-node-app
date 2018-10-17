@@ -6,6 +6,7 @@ var keys = require("./keys.js"); // had to specify "./" because it is a file not
 var fs = require("fs");
 var request = require("request");
 var usrArgs = process.argv;
+var inquirer = require("inquirer"); // need this for prompting user for info
 // var spotify = new Spotify(keys.spotify); // this statement errors out, 
 // not sure if it related to keyword new, the uppercase "S", or a constructor issue
 
