@@ -6,3 +6,6 @@ exports.spotify = {
   secret: process.env.SPOTIFY_SECRET
 };
 
+exports.bands = {
+ id: process.env.APP_ID
+};

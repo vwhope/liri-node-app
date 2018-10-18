@@ -18,7 +18,7 @@ var moment = require("moment");
 //         return console.log(error);
 //     }
 //     console.log(data);
-   
+
 //     var dataArr = data.split(",");
 //     console.log(dataArr);
 // });
@@ -34,35 +34,35 @@ var moment = require("moment");
 // first we have to present 4 possible options to the user
 // will use .prompt - so added code at start to require the inquirer package
 inquirer
-  .prompt([
-// FIRST prompt user with four options
-{
-    type: "checkbox",
-    message: "What information are you seeking?",
-    choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"],
-    name: "userSelection"
-}
-
+.prompt([
+    // FIRST prompt user with four options
+    {
+        type: "checkbox",
+        message: "What information are you seeking?",
+        choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"],
+        name: "userSelection"
+    }
+    
 ]) // the callback function can be named whatever you want
 .then(function(processUserInput) {
-  console.log(processUserInput.userSelection);
- // SECOND based on userSelection, retrieve the requested information
-  switch (processUserInput.userSelection[0]) {
-    case "concert-this":
-      concert();
-      break;
-    
-    case "spotify-this-song":
-      spotify();
-      break;
-    
-    case "movie-this":
-      movie();
-      break;
-    
-    case "do-what-it-says":
-      what();
-      break;
+    console.log(processUserInput.userSelection);
+    // SECOND based on userSelection, retrieve the requested information
+    switch (processUserInput.userSelection[0]) {
+        case "concert-this":
+        concert();
+        break;
+        
+        case "spotify-this-song":
+        spotify();
+        break;
+        
+        case "movie-this":
+        movie();
+        break;
+        
+        case "do-what-it-says":
+        what();
+        break;
     }
     
 }); // end of inquirer.prompt
@@ -71,84 +71,59 @@ inquirer
 // concert
 function concert() {
     console.log("You are in the concert function");
-
+    
     inquirer
     .prompt([
-  // get artist or band name
-  {
-      type: "input",
-      message: "Please enter an artist or band name",
-      name: "userBand"
-  }
-  
-  ]) // the callback function can be named whatever you want
-  .then(function(processUserBand) {
-    console.log(processUserBand.userBand);
-    var artist = processUserBand.userBand;
-    console.log("artist: " + artist);
-
-    // request Bands in Town API with the user's artist/band specified
-request("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=0e4b38144ba15bd1c166d0dc3acd6c27", function(error, response, body) {
-
-    // If the request is successful (i.e. if the response status code is 200)
-    if (!error && response.statusCode === 200) {
-  
-      // Check that request was successful 
-      console.log("Response: " + JSON.stringify(response.statusCode));
-      // parse the body data for retrieval  
-      var parsedBody = JSON.parse(body);
-      var venueName = "";
-      var venueCity = "";
-      var venueRegion = "";
-      var venueCountry = "";
-      var venueDate = "";
-      
-      for (i = 0; i < parsedBody.length; i++) {
-        venueName = JSON.stringify(parsedBody[i].venue.name);  
-        venueCity =  JSON.stringify(parsedBody[i].venue.city);  
-        venueRegion = JSON.stringify(parsedBody[i].venue.region);
-        venueCountry = JSON.stringify(parsedBody[i].venue.country);
-        rawDate = JSON.stringify(parsedBody[i].datetime);  
-        venueDate = moment(rawDate, 'YYYYMMDDT00:00:00').format('MM/DD/YYYY');
-// need to remove the boundry quotes for each value before displaying to user
-
-
-
-        console.log("\nVenue Name: " + venueName.substr(1, venueName.length -2));
-        console.log("Venue Location: " + venueCity.substr(1, venueCity.length -2) + ", " + venueRegion.substr(1, venueRegion.length -2) + " " + venueCountry.substr(1, venueCountry.length -2));
-        // console.log("Venue region: " + venueRegion);
-        // console.log("Venue country: " + venueCountry);
-        console.log("Concert Date: " + venueDate);
-
-      }
-
-
-
-
-    //   var venueName = JSON.stringify(parsedBody[0].venue.name);  
-    //   var venueCity =  JSON.stringify(parsedBody[0].venue.city);  
-    //   var venueRegion = JSON.stringify(parsedBody[0].venue.region);
-    //   var venueCountry = JSON.stringify(parsedBody[0].venue.country);
-    //   var rawDate = JSON.stringify(parsedBody[0].datetime);
-    //   //var formatDate = moment(venueDate, "20130208T09:30:00" ).format('MM/DD/YYYY');
-      
-    //   var venueDate = moment(rawDate, 'YYYYMMDDT00:00:00').format('MM/DD/YYYY'); 
-
-   
-      
-    }
-    else {
-        console.log("There was no event data for your selection. Enter a different artist or band");
-    }
-  });
-  
-  
-  
+        // get artist or band name
+        {
+            type: "input",
+            message: "Please enter an artist or band name",
+            name: "userBand"
+        }
+        
+    ]) // the callback function can be named whatever you want
+    .then(function(processUserBand) {
+        console.log(processUserBand.userBand);
+        var artist = processUserBand.userBand;
+        console.log("artist: " + artist);
+        
+        // request Bands in Town API with the user's artist/band specified
+        request("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=APP_ID", function(error, response, body) {
+        
+        // If the request is successful (i.e. if the response status code is 200)
+        if (!error && response.statusCode === 200) {
+            
+            // Check that request was successful 
+            console.log("Response: " + JSON.stringify(response.statusCode));
+            // parse the body data for retrieval  
+            var parsedBody = JSON.parse(body);
+            var venueName = "";
+            var venueCity = "";
+            var venueRegion = "";
+            var venueCountry = "";
+            var venueDate = "";
+            
+            for (i = 0; i < parsedBody.length; i++) {
+                venueName = JSON.stringify(parsedBody[i].venue.name);  
+                venueCity =  JSON.stringify(parsedBody[i].venue.city);  
+                venueRegion = JSON.stringify(parsedBody[i].venue.region);
+                venueCountry = JSON.stringify(parsedBody[i].venue.country);
+                rawDate = JSON.stringify(parsedBody[i].datetime);  
+                venueDate = moment(rawDate, 'YYYYMMDDT00:00:00').format('MM/DD/YYYY');
+                
+                // remove the boundry quotes for each value before displaying to user
+                console.log("\nVenue Name: " + venueName.substr(1, venueName.length -2));
+                console.log("Venue Location: " + venueCity.substr(1, venueCity.length -2) + ", " + venueRegion.substr(1, venueRegion.length -2) + " " + venueCountry.substr(1, venueCountry.length -2));
+                console.log("Concert Date: " + venueDate);
+            }
+            
+        }
+        else {
+            console.log("Error retrieving request.");
+        }
+    });
+    
 }); // end of concert inquirer.prompt
-
-
-
-
 
 } // end of concert()
 
