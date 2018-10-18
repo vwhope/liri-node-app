@@ -97,23 +97,44 @@ request("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=0e4b3
       console.log("Response: " + JSON.stringify(response.statusCode));
       // parse the body data for retrieval  
       var parsedBody = JSON.parse(body);
-      var venueName = JSON.stringify(parsedBody[0].venue.name);  
-      var venueCity =  JSON.stringify(parsedBody[0].venue.city);  
-      var venueRegion = JSON.stringify(parsedBody[0].venue.region);
-      var venueCountry = JSON.stringify(parsedBody[0].venue.country);
-      var rawDate = JSON.stringify(parsedBody[0].datetime);
-      //var formatDate = moment(venueDate, "20130208T09:30:00" ).format('MM/DD/YYYY');
+      var venueName = "";
+      var venueCity = "";
+      var venueRegion = "";
+      var venueCountry = "";
+      var venueDate = "";
       
-      var venueDate = moment(rawDate, 'YYYYMMDDT00:00:00').format('MM/DD/YYYY'); 
+      for (i = 0; i < parsedBody.length; i++) {
+        venueName = JSON.stringify(parsedBody[i].venue.name);  
+        venueCity =  JSON.stringify(parsedBody[i].venue.city);  
+        venueRegion = JSON.stringify(parsedBody[i].venue.region);
+        venueCountry = JSON.stringify(parsedBody[i].venue.country);
+        rawDate = JSON.stringify(parsedBody[i].datetime);  
+        venueDate = moment(rawDate, 'YYYYMMDDT00:00:00').format('MM/DD/YYYY');
+// need to remove the boundry quotes for each value before displaying to user
 
-    //  console.log("string venue: " + JSON.stringify(parsedBody[0].venue));
 
-      console.log("Venue name: " + venueName);
-      console.log("Venue city: " + venueCity);
-      console.log("Venue region: " + venueRegion);
-      console.log("Venue country: " + venueCountry);
-      console.log("Concert Date: " + venueDate);
+
+        console.log("\nVenue Name: " + venueName.substr(1, venueName.length -2));
+        console.log("Venue Location: " + venueCity.substr(1, venueCity.length -2) + ", " + venueRegion.substr(1, venueRegion.length -2) + " " + venueCountry.substr(1, venueCountry.length -2));
+        // console.log("Venue region: " + venueRegion);
+        // console.log("Venue country: " + venueCountry);
+        console.log("Concert Date: " + venueDate);
+
+      }
+
+
+
+
+    //   var venueName = JSON.stringify(parsedBody[0].venue.name);  
+    //   var venueCity =  JSON.stringify(parsedBody[0].venue.city);  
+    //   var venueRegion = JSON.stringify(parsedBody[0].venue.region);
+    //   var venueCountry = JSON.stringify(parsedBody[0].venue.country);
+    //   var rawDate = JSON.stringify(parsedBody[0].datetime);
+    //   //var formatDate = moment(venueDate, "20130208T09:30:00" ).format('MM/DD/YYYY');
       
+    //   var venueDate = moment(rawDate, 'YYYYMMDDT00:00:00').format('MM/DD/YYYY'); 
+
+   
       
     }
     else {
