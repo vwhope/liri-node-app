@@ -7,6 +7,7 @@ var fs = require("fs");
 var request = require("request");
 var usrArgs = process.argv;
 var inquirer = require("inquirer"); // need this for prompting user for info
+var moment = require("moment");
 // var spotify = new Spotify(keys.spotify); // this statement errors out, 
 // not sure if it related to keyword new, the uppercase "S", or a constructor issue
 
@@ -70,22 +71,80 @@ inquirer
 // concert
 function concert() {
     console.log("You are in the concert function");
-}
+
+    inquirer
+    .prompt([
+  // get artist or band name
+  {
+      type: "input",
+      message: "Please enter an artist or band name",
+      name: "userBand"
+  }
+  
+  ]) // the callback function can be named whatever you want
+  .then(function(processUserBand) {
+    console.log(processUserBand.userBand);
+    var artist = processUserBand.userBand;
+    console.log("artist: " + artist);
+
+    // request Bands in Town API with the user's artist/band specified
+request("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=0e4b38144ba15bd1c166d0dc3acd6c27", function(error, response, body) {
+
+    // If the request is successful (i.e. if the response status code is 200)
+    if (!error && response.statusCode === 200) {
+  
+      // Check that request was successful 
+      console.log("Response: " + JSON.stringify(response.statusCode));
+      // parse the body data for retrieval  
+      var parsedBody = JSON.parse(body);
+      var venueName = JSON.stringify(parsedBody[0].venue.name);  
+      var venueCity =  JSON.stringify(parsedBody[0].venue.city);  
+      var venueRegion = JSON.stringify(parsedBody[0].venue.region);
+      var venueCountry = JSON.stringify(parsedBody[0].venue.country);
+      var rawDate = JSON.stringify(parsedBody[0].datetime);
+      //var formatDate = moment(venueDate, "20130208T09:30:00" ).format('MM/DD/YYYY');
+      
+      var venueDate = moment(rawDate, 'YYYYMMDDT00:00:00').format('MM/DD/YYYY'); 
+
+    //  console.log("string venue: " + JSON.stringify(parsedBody[0].venue));
+
+      console.log("Venue name: " + venueName);
+      console.log("Venue city: " + venueCity);
+      console.log("Venue region: " + venueRegion);
+      console.log("Venue country: " + venueCountry);
+      console.log("Concert Date: " + venueDate);
+      
+      
+    }
+    else {
+        console.log("There was no event data for your selection. Enter a different artist or band");
+    }
+  });
+  
+  
+  
+}); // end of concert inquirer.prompt
+
+
+
+
+
+} // end of concert()
 
 // spotify
 function spotify() {
     console.log("You are in the spotify function");
-}
+} // end of spotify()
 
 // movie
 function movie() {
     console.log("You are in the movie function");
-}
+} // end of movie()
 
 // what
 function what() {
     console.log("You are in the what function");
-}
+} // end of what()
 
 
 
