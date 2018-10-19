@@ -8,8 +8,7 @@ var request = require("request");
 var usrArgs = process.argv;
 var inquirer = require("inquirer"); // need this for prompting user for info
 var moment = require("moment");
-// var spotify = new Spotify(keys.spotify); // this statement errors out, 
-// not sure if it related to keyword new, the uppercase "S", or a constructor issue
+var Spotify = require("node-spotify-api");
 
 /////////////////////////////
 // this code works - should go in different section
@@ -23,9 +22,7 @@ var moment = require("moment");
 //     console.log(dataArr);
 // });
 
-// console.log("Can you see your spotify keys here?" + JSON.stringify(keys.spotify));
-// console.log(JSON.stringify(keys.spotify.id));
-// console.log(JSON.stringify(keys.spotify.secret));
+
 ////////////////////////////////
 
 // program starts here
@@ -68,16 +65,16 @@ inquirer
 }); // end of inquirer.prompt
 
 // start function definitions
-// concert
+// CONCERT //
 function concert() {
-    console.log("You are in the concert function");
+    // console.log("You are in the concert function");
     
     inquirer
     .prompt([
         // get artist or band name
         {
             type: "input",
-            message: "Please enter an artist or band name",
+            message: "Please enter an artist or band name: ",
             name: "userBand"
         }
         
@@ -97,12 +94,13 @@ function concert() {
             console.log("Response: " + JSON.stringify(response.statusCode));
             // parse the body data for retrieval  
             var parsedBody = JSON.parse(body);
+            // declare local variables
             var venueName = "";
             var venueCity = "";
             var venueRegion = "";
             var venueCountry = "";
             var venueDate = "";
-            
+            // cycle through all body data
             for (i = 0; i < parsedBody.length; i++) {
                 venueName = JSON.stringify(parsedBody[i].venue.name);  
                 venueCity =  JSON.stringify(parsedBody[i].venue.city);  
@@ -127,29 +125,157 @@ function concert() {
 
 } // end of concert()
 
-// spotify
+// SPOTIFY //
 function spotify() {
-    console.log("You are in the spotify function");
+    //  console.log("You are in the spotify function");
+    
+    var spotify = new Spotify(keys.spotify); // crt new obj whose properties are my keys for the API 
+    // see different ways to access the keys
+    // console.log("spotify variable: " + spotify); // [object Object]
+    // console.log("stringified keys.spotify variable:" + JSON.stringify(keys.spotify)); // { "id" : "xxx" , "secret" : "xxx"}
+    // console.log(JSON.stringify(keys.spotify.id)); // shows code
+    // console.log(JSON.stringify(keys.spotify.secret)); // shows code
+    
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Please enter name of a song: ",
+            name: "userSong"
+        }
+        
+    ]) 
+    // set a callback function, get user's song, call API
+    .then(function(processUserSong) {
+        console.log(processUserSong.userSong);
+        var song = processUserSong.userSong;
+        // if user didn't enter a song, default to The Sign by Ace of Base
+        if (song === "") {
+            song = "The Sign AND Ace of Base";
+        }
+        
+        console.log("song: " + song);
+        
+        spotify
+        // query request to spotify API
+        .request("https://api.spotify.com/v1/search?q=" + song + "&type=track&market=US&offset=0&limit=10")
+        
+        // if request has no errors process and display information
+        .then(function(response) {
+            
+            var stringifyResponse = JSON.stringify(response);
+            //  console.log(stringifyResponse);
+            var parsed = JSON.parse(stringifyResponse);
+            //  console.log(parsed);
+            
+            // display requested info to reader - limit is 10 songs
+            for (i = 0; i < parsed.tracks.items.length; i++) {
+                
+                if (parsed.tracks.items[i].preview_url === null) {
+                    console.log("\nArtist's Name: " + parsed.tracks.items[i].album.artists[0].name); // artists name 
+                    console.log("Song: " + parsed.tracks.items[i].name); // song name
+                    console.log("Preview URL: no preview available");
+                    console.log("Album Name: " + parsed.tracks.items[i].album.name);
+                } else {
+                    
+                    console.log("\nArtist's Name: " + parsed.tracks.items[i].album.artists[0].name); // artists name 
+                    console.log("Song: " + parsed.tracks.items[i].name); // song name
+                    console.log("Preview URL: " + parsed.tracks.items[i].preview_url); // artists name or album name?
+                    console.log("Album Name: " + parsed.tracks.items[i].album.name);
+                }
+            }    
+            
+        })
+        .catch(function(err) {
+            console.log("Error: " + err);
+            
+        })
+        // END request song info using Spotify API with the user's song specified
+        
+    }); // END SONG inquirer.prompt
+    
 } // end of spotify()
 
-// movie
+
+
+
+// MOVIE //
 function movie() {
     console.log("You are in the movie function");
+    
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Please enter MOVIE name: ",
+            name: "userMovie",
+            default: "Mr. Nobody"
+        }
+    ]) 
+    
+    // set a callback function, get user's MOVIE name, call API
+    .then(function(processUserMovie) {
+        console.log(processUserMovie.userMovie);
+        var movie = processUserMovie.userMovie;
+        // if user didn't enter a movie, pgm should default to Mr. Nobody
+        // if (movie === "") {
+        //     movie = "Mr. Nobody";
+        // }
+        
+        console.log("Movie: " + movie);
+        
+       var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+        
+        
+        request(queryUrl, function(error, response, body) {
+        
+          // If the request is successful
+          if (!error && response.statusCode === 200) {
+          
+          console.log("Title: " + JSON.parse(body).title);
+          console.log("Release Year: " + JSON.parse(body).Year);
+          console.log("IMDb Rating: " + JSON.parse(body).rating);
+          console.log("IMDb Rating: " + JSON.parse(body).rating);
+          console.log("IMDb Rating: " + JSON.parse(body).rating);
+          console.log("IMDb Rating: " + JSON.parse(body).rating);
+          console.log("IMDb Rating: " + JSON.parse(body).rating);
+          console.log("IMDb Rating: " + JSON.parse(body).rating);
+          console.log("IMDb Rating: " + JSON.parse(body).rating);
+          }
+        });
+
+
+            
+    }); // END MOVIE inquirer.prompt
+        
 } // end of movie()
-
-// what
-function what() {
-    console.log("You are in the what function");
-} // end of what()
-
-
-
-
-
-
-// third we have to process the information
-
-
-// present the correct information back to the user
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // WHAT //
+    function what() {
+        console.log("You are in the what function");
+    } // end of what()
+    
+    
+    
+    
+    
+    
+    // third we have to process the information
+    
+    
+    // present the correct information back to the user
+    
+    
+    
