@@ -10,21 +10,6 @@ var inquirer = require("inquirer"); // need this for prompting user for info
 var moment = require("moment");
 var Spotify = require("node-spotify-api");
 
-/////////////////////////////
-// this code works - should go in different section
-// fs.readFile("random.txt", "utf8", function(error,data) {
-//     if(error) {
-//         return console.log(error);
-//     }
-//     console.log(data);
-
-//     var dataArr = data.split(",");
-//     console.log(dataArr);
-// });
-
-
-////////////////////////////////
-
 // program starts here
 // apply "use strict" to entire program to throw errors related to bad code (ex. undefined variable)
 "use strict";
@@ -209,7 +194,7 @@ function movie() {
             type: "input",
             message: "Please enter MOVIE name: ",
             name: "userMovie",
-            default: "Mr. Nobody"
+           // default: "Mr. Nobody"
         }
     ]) 
     
@@ -218,33 +203,33 @@ function movie() {
         console.log(processUserMovie.userMovie);
         var movie = processUserMovie.userMovie;
         // if user didn't enter a movie, pgm should default to Mr. Nobody
-        // if (movie === "") {
-        //     movie = "Mr. Nobody";
-        // }
+        if (movie === "") {
+            movie = "Mr. Nobody";
+        }
         
-        console.log("Movie: " + movie);
+        // console.log("Movie: " + movie);
         
-       var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
-        
-        
+        var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
         request(queryUrl, function(error, response, body) {
         
-          // If the request is successful
+          // If successful request, get info
           if (!error && response.statusCode === 200) {
           
-          console.log("Title: " + JSON.parse(body).title);
-          console.log("Release Year: " + JSON.parse(body).Year);
-          console.log("IMDb Rating: " + JSON.parse(body).rating);
-          console.log("IMDb Rating: " + JSON.parse(body).rating);
-          console.log("IMDb Rating: " + JSON.parse(body).rating);
-          console.log("IMDb Rating: " + JSON.parse(body).rating);
-          console.log("IMDb Rating: " + JSON.parse(body).rating);
-          console.log("IMDb Rating: " + JSON.parse(body).rating);
-          console.log("IMDb Rating: " + JSON.parse(body).rating);
-          }
+          // console.log(JSON.parse(body));
+          // I know I could have just used the Year - but wanted practice with Moment.js again
+          var rawMovieDate = JSON.parse(body).Released;
+          var releasedYear = moment(rawMovieDate, 'DD-MMM-YYYY').format('YYYY');
+
+          console.log("\nTitle: " + JSON.parse(body).Title);
+          console.log("Release Year: " + releasedYear);
+          console.log("IMDb Rating: " + JSON.parse(body).Ratings[0].Value);
+          console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
+          console.log("Country produced: " + JSON.parse(body).Country);
+          console.log("Language: " + JSON.parse(body).Language);
+          console.log("Movie Plot: " + JSON.parse(body).Plot);
+          console.log("Actors: " + JSON.parse(body).Actors);
+           }
         });
-
-
             
     }); // END MOVIE inquirer.prompt
         
@@ -264,7 +249,33 @@ function movie() {
     
     // WHAT //
     function what() {
-        console.log("You are in the what function");
+        console.log("You are in the WHAT function");
+
+
+    // Read random file to determine which action to perform
+    fs.readFile("random.txt", "utf8", function(error,data) {
+        if(error) {
+            return console.log("Error: " + error);
+        }
+        console.log(data);
+
+        var dataArr = data.split(",");
+
+        var randomAction = (dataArr[0]);
+        var randomInput = (dataArr[1]);
+
+        
+
+    });
+
+
+
+
+
+
+
+
+
     } // end of what()
     
     
