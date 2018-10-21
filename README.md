@@ -14,10 +14,10 @@ To see liri-node-app in action [Click Here](https://myvideonamewillgohere.com) /
 To run liri-node-app on your system follow these instructions.
 
 **Environment Setup**
-* 1. Navigate to the directory on your computer you wish to set up the liri-node-app
-* 2. Clone the liri-node-app repo into that directory
-* 3. Still in that directory, from command line (git bash) Run:
-    * npm init -y // this will initial a package.json file 
+1. Navigate to the directory on your computer you wish to set up the liri-node-app
+2. Clone the liri-node-app from this repo into your directory
+3. Still in that directory, from command line, type:
+    * npm init -y // this will initialize a package.json file 
     * check to see if you have a .gitignore file (run: ls -a)
     * if you do not have a .gitignore file, create one and add these file names
         * node_modules
@@ -47,6 +47,7 @@ To run liri-node-app on your system follow these instructions.
 **Run Application**    
 
 1. From a command line, in same directory where required packages were installed, enter:
+    
     node liri.js
 
 2. You will be presented with four options as shown below: 
@@ -57,11 +58,11 @@ To run liri-node-app on your system follow these instructions.
 
 ![select option](assets/liri-main-select-movie.jpg)
 
-4. When prompted, enter your information and press enter. Your requested information should display on the screen.
+4. When prompted, enter your information and press enter. 
 
-![information](assets/liri-main-movie-enter name.jpg)
+![enter info](assets/liri-main-movie-enter-name.jpg)
 
-5. Results for information entered are displayed
+5. Results for information entered are displayed.
 
 ![results displayed](assets/liri-main-movie-results.jpg)
 
