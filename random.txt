@@ -1,3 +1,1 @@
-spotify-this-song,"I Want it That Way"
-concert-this,"U2"
-movie-this,"the princess bride"
+spotify-this-song,"I Want it That Way",concert-this,"U2",movie-this,"the princess bride"
