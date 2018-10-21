@@ -1,0 +1,19 @@
+
+Venue Name: The O2, Venue Location: London,  United Kingdom, Concert Date: 10/23/2018
+Venue Name: The O2, Venue Location: London,  United Kingdom, Concert Date: 10/24/2018
+Venue Name: SSE Arena, Venue Location: Belfast,  United Kingdom, Concert Date: 10/27/2018
+Venue Name: 3Arena, Venue Location: Dublin,  Ireland, Concert Date: 11/05/2018
+Venue Name: SSE Arena, Venue Location: Belfast,  United Kingdom, Concert Date: 10/28/2018
+Venue Name: 3Arena, Venue Location: Dublin,  Ireland, Concert Date: 11/06/2018
+Venue Name: 3Arena, Venue Location: Dublin,  Ireland, Concert Date: 11/09/2018
+Venue Name: Mercedes-Benz Arena Berlin, Venue Location: Berlin,  Germany, Concert Date: 11/13/2018
+Venue Name: 3Arena, Venue Location: Dublin,  Ireland, Concert Date: 11/10/2018
+Artist's Name: Katrina & The Waves, Song: Walking On Sunshine, Preview URL: no preview available, Album Name: Katrina & The Waves
+Artist's Name: Katrina & The Waves, Song: Walking On Sunshine, Preview URL: no preview available, Album Name: Katrina & The Waves
+Artist's Name: Jane's Addiction, Song: Jane Says, Preview URL: https://p.scdn.co/mp3-preview/cde91325a919d0e561d717359f4b47cf2bb2eb90?cid=f5694dfa27a44639b37b0d151aa6dd71, Album Name: Nothing's Shocking
+Artist's Name: Lynyrd Skynyrd, Song: Sweet Home Alabama, Preview URL: no preview available, Album Name: Second Helping
+Artist's Name: Lynyrd Skynyrd, Song: Tuesday's Gone, Preview URL: no preview available, Album Name: Pronounced' Leh-'Nerd 'Skin-'Nerd
+Artist's Name: Ron Shepard, Song: Give Me Three Steps, Preview URL: https://p.scdn.co/mp3-preview/7e8ef4b057035f67cd861cc4b419ae33755d1dff?cid=f5694dfa27a44639b37b0d151aa6dd71, Album Name: Southern Rock
+Artist's Name: The Allman Brothers Band, Song: Statesboro Blues - Live At The Fillmore East/1971, Preview URL: no preview available, Album Name: At Fillmore East (Deluxe Edition)
+Title: Fried Green Tomatoes, Release Year: 1992, IMDb Rating: 7.7/10, Rotten Tomatoes Rating: 73%, Country produced: USA, Language: English, Movie Plot: A housewife who is unhappy with her life befriends an old lady in a nursing home and is enthralled by the tales she tells of people she used to know., Actors: Kathy Bates, Mary Stuart Masterson, Mary-Louise Parker, Jessica Tandy
+Title: Love and Death, Release Year: 1975, IMDb Rating: 7.8/10, Rotten Tomatoes Rating: 100%, Country produced: USA, Language: English, Movie Plot: In czarist Russia, a neurotic soldier and his distant cousin formulate a plot to assassinate Napoleon., Actors: Woody Allen, Diane Keaton, Georges Adet, Frank Adu

@@ -6,60 +6,15 @@
 // 
 //read and set any environment variables using the dotenv package
 var dotenv = require("dotenv").config(); // your API key should be stored there
-
-
 var keys = require("./keys.js"); // had to specify "./" because it is a file not a module
 var fs = require("fs");
 var request = require("request");
-// var usrArgs = process.argv;
 var inquirer = require("inquirer"); // need this for prompting user for info
 var moment = require("moment");
 var Spotify = require("node-spotify-api");
 
 // ================================ BEGIN FUNCTION DEFINITIONS ===============================================================================
 // 
-
-
-// ================================ BEGIN MAIN PROCESSING ====================================================================================
-// 
-// apply "use strict" to entire program to throw errors in order to catch potential poor code (ex. undefined variable)
-"use strict";
-// 
-inquirer
-.prompt([
-    // FIRST prompt user with four options
-    {
-        type: "checkbox",
-        message: "What information are you seeking?",
-        choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"],
-        name: "userSelection"
-    }
-]) 
-.then(function(processUserInput) {
-    
-    // console.log(processUserInput.userSelection); // ex. [concert-this]
-    
-    switch (processUserInput.userSelection[0]) {
-        case "concert-this":
-        concert();
-        break;
-        
-        case "spotify-this-song":
-        spotify();
-        break;
-        
-        case "movie-this":
-        movie();
-        break;
-        
-        case "do-what-it-says":
-        what();
-        break;
-    }
-    
-}); // end of inquirer.prompt
-
-
 // CONCERT PROMPT //
 function concert() {
     // console.log("You are in the concert function");
@@ -85,6 +40,7 @@ function concert() {
     }); // end of concert inquirer.prompt
     
 } // END CONCERT PROMPT
+
 
 // BEGIN FIND CONCERT 
 // created separate function to re-use code by option 4, random selection - keeping the user prompt section separate
@@ -121,7 +77,20 @@ function findConcert (searchConcert) {
             console.log("\nVenue Name: " + venueName.substr(1, venueName.length -2));
             console.log("Venue Location: " + venueCity.substr(1, venueCity.length -2) + ", " + venueRegion.substr(1, venueRegion.length -2) + " " + venueCountry.substr(1, venueCountry.length -2));
             console.log("Concert Date: " + venueDate);
-        }
+
+            var venueData = ("\nVenue Name: " + venueName.substr(1, venueName.length -2))
+            + ", " + ("Venue Location: " + venueCity.substr(1, venueCity.length -2) + ", " + venueRegion.substr(1, venueRegion.length -2) + " " + venueCountry.substr(1, venueCountry.length -2))
+            + ", " + ("Concert Date: " + venueDate);
+
+
+            // add Venue Data to log.txt
+            fs.appendFile('./log.txt', venueData, 'utf8', 
+                function(err) {
+                  if (err) throw err;
+                //  console.log('Venue Data Added');
+            }); // end appendFile
+        
+        } // end of the for loop
         
     }
     else {
@@ -150,13 +119,13 @@ function spotify() {
     ]) 
     // set a callback function, get user's song, call API
     .then(function(processUserSong) {
-        console.log(processUserSong.userSong);
+        // console.log(processUserSong.userSong);
         var song = processUserSong.userSong;
         // if user didn't enter a song, default to The Sign by Ace of Base
         if (song === "") {
             song = "Ace of Base The Sign";
         }
-        console.log("song: " + song);
+        // console.log("song: " + song);
         
         findSong(song);
         
@@ -166,12 +135,12 @@ function spotify() {
 
 // BEGIN FIND SONG  //     
 function findSong (searchSong) {
-    console.log(searchSong);
+    // console.log(searchSong);
     var song = searchSong;
     var spotify = new Spotify(keys.spotify); // crt new obj whose properties are my keys for the API 
     spotify
     // query request to spotify API
-    .request("https://api.spotify.com/v1/search?q=" + song + "&type=track&market=US&offset=0&limit=10")
+    .request("https://api.spotify.com/v1/search?q=" + song + "&type=track&market=US&offset=0&limit=1")
     
     // if request has no errors process and display information
     .then(function(response) {
@@ -189,15 +158,40 @@ function findSong (searchSong) {
                 console.log("Song: " + parsed.tracks.items[i].name); // song name
                 console.log("Preview URL: no preview available");
                 console.log("Album Name: " + parsed.tracks.items[i].album.name);
+
+                var songData = ("\nArtist's Name: " + parsed.tracks.items[i].album.artists[0].name)
+                + ", " + ("Song: " + parsed.tracks.items[i].name)
+                + ", " + ("Preview URL: no preview available")
+                + ", " + ("Album Name: " + parsed.tracks.items[i].album.name);
+
+                // add Venue Data to log.txt
+                fs.appendFile('./log.txt', songData, 'utf8', 
+                function(err) {
+                if (err) throw err;
+                //  console.log('Song Data Added');
+                }); // end appendFile
+
             } else {
                 
                 console.log("\nArtist's Name: " + parsed.tracks.items[i].album.artists[0].name); // artists name 
                 console.log("Song: " + parsed.tracks.items[i].name); // song name
                 console.log("Preview URL: " + parsed.tracks.items[i].preview_url); // artists name or album name?
                 console.log("Album Name: " + parsed.tracks.items[i].album.name);
+
+                var songData = ("\nArtist's Name: " + parsed.tracks.items[i].album.artists[0].name)
+                + ", " + ("Song: " + parsed.tracks.items[i].name)
+                + ", " + ("Preview URL: " + parsed.tracks.items[i].preview_url)
+                + ", " + ("Album Name: " + parsed.tracks.items[i].album.name);
+
+                // add Venue Data to log.txt
+                fs.appendFile('./log.txt', songData, 'utf8', 
+                function(err) {
+                if (err) throw err;
+                //  console.log('Song Data Added');
+                }); // end appendFile
             }
         }    
-        
+ 
     })
     .catch(function(err) {
         console.log("Error: " + err);
@@ -223,7 +217,7 @@ function movie() {
     
     // set a callback function, get user's MOVIE name, call API
     .then(function(processUserMovie) {
-        console.log(processUserMovie.userMovie);
+       // console.log(processUserMovie.userMovie);
         var movie = processUserMovie.userMovie;
         // if user didn't enter a movie, pgm should default to Mr. Nobody
         if (movie === "") {
@@ -238,7 +232,7 @@ function movie() {
 
 // BEGIN FIND MOVIE //
 function findMovie (searchMovie) {
-    console.log(searchMovie);
+ //   console.log(searchMovie);
     var movie = searchMovie;
     
     
@@ -261,6 +255,23 @@ function findMovie (searchMovie) {
             console.log("Language: " + JSON.parse(body).Language);
             console.log("Movie Plot: " + JSON.parse(body).Plot);
             console.log("Actors: " + JSON.parse(body).Actors);
+
+            var movieData = ("\nTitle: " + JSON.parse(body).Title)
+            + ", " + ("Release Year: " + releasedYear)
+            + ", " + ("IMDb Rating: " + JSON.parse(body).Ratings[0].Value)
+            + ", " + ("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value)
+            + ", " + ("Country produced: " + JSON.parse(body).Country)
+            + ", " + ("Language: " + JSON.parse(body).Language)
+            + ", " + ("Movie Plot: " + JSON.parse(body).Plot)
+            + ", " + ("Actors: " + JSON.parse(body).Actors)
+
+              // add Movie Data to log.txt
+              fs.appendFile('./log.txt', movieData, 'utf8', 
+              function(err) {
+              if (err) throw err;
+              //  console.log('Movie Data Added');
+              }); // end appendFile
+
         }
     });
     
@@ -309,4 +320,43 @@ function what() {
     });
      
 } // END WHAT
+//
+// ================================ BEGIN MAIN PROCESSING ====================================================================================
+// 
+// apply "use strict" to entire program to throw errors in order to catch potential poor code (ex. undefined variable)
+"use strict";
+// 
+inquirer
+.prompt([
+    // FIRST prompt user with four options
+    {
+        type: "checkbox",
+        message: "What information are you seeking?",
+        choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"],
+        name: "userSelection"
+    }
+]) 
+.then(function(processUserInput) {
+    
+    // console.log(processUserInput.userSelection); // ex. [concert-this]
+    
+    switch (processUserInput.userSelection[0]) {
+        case "concert-this":
+        concert();
+        break;
+        
+        case "spotify-this-song":
+        spotify();
+        break;
+        
+        case "movie-this":
+        movie();
+        break;
+        
+        case "do-what-it-says":
+        what();
+        break;
+    }
+    
+}); // end of inquirer.prompt
 
