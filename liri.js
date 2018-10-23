@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  liri.js - MAIN ENTRY POINT for liri-node-app
+//  liri.js - MAIN ENTRY POINT for liri-node-app   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // ================================ BEGIN GLOBAL and ENVIRONMENT VARIABLE DEFINITIONS =======================================================
@@ -24,8 +24,9 @@ function concert() {
         {
             type: 'input',
             message: 'Search for Upcoming Concerts: (enter artist or band name): ',
-            name: 'userBand'
-        }
+            name: 'userBand',
+                                     
+        } // end prompt
         
     ]) 
     
@@ -74,6 +75,7 @@ function findConcert (searchConcert) {
             console.log('\nVenue Name: ' + venueName.substr(1, venueName.length -2));
             console.log('Venue Location: ' + venueCity.substr(1, venueCity.length -2) + ', ' + venueRegion.substr(1, venueRegion.length -2) + ' ' + venueCountry.substr(1, venueCountry.length -2));
             console.log('Concert Date: ' + venueDate);
+          
             
             var venueData = ('\nVenue Name: ' + venueName.substr(1, venueName.length -2))
             + ', ' + ('Venue Location: ' + venueCity.substr(1, venueCity.length -2) + ', ' + venueRegion.substr(1, venueRegion.length -2) + ' ' + venueCountry.substr(1, venueCountry.length -2))
@@ -89,8 +91,9 @@ function findConcert (searchConcert) {
         } // end of the for loop
         
     }
+   
     else {
-        console.log('Error retrieving request.');
+        console.log('Error processing request.');
     }
 });
 } // END FIND CONCERT
@@ -343,7 +346,7 @@ inquirer
     // FIRST prompt user with four options
     {
         type: 'checkbox',
-        message: 'What information are you seeking?',
+        message: 'Please select a search type.',
         choices: ['concert-this', 'spotify-this-song', 'movie-this', 'do-what-it-says'],
         name: 'userSelection'
     }

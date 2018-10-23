@@ -9,7 +9,7 @@
     * Spotify // [Spotify](https://www.npmjs.com/package/node-spotify-api)
     * OMDb //  [OMDb](http://www.omdbapi.com)
 
-To see liri-node-app in action [Click Here](https://myvideonamewillgohere.com) //NOTE TO SELF: DON"T FORGET THIS!
+Click link for a demo [liri-node-app-demo](https://drive.google.com/file/d/1rcJGvPWDbTAUShYQGVeT5-GlA2P_BHJZ/view) 
 
 To run liri-node-app on your system follow these instructions.
 
